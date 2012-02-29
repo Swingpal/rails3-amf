@@ -1,6 +1,6 @@
 module Rails3AMF
   class ParamsTransformation
-    def underscore_hash_keys(hash)
+    def self.underscore_hash_keys(hash)
       case hash
         when Array
           hash.map { |v| underscore_hash_keys(v) }
@@ -8,7 +8,7 @@ module Rails3AMF
           Hash[hash.map{|k, v| [underscore_key(k), underscore_hash_keys(v)]}]
         else
           hash
-       end
+      end
     end
 
     def underscore_key(k)

@@ -39,7 +39,7 @@ module Rails3AMF
       new_env = env.dup
       new_env['HTTP_ACCEPT'] = Mime::AMF.to_s # Force amf response
       req = ActionDispatch::Request.new(new_env)
-      req.params.merge!(build_params(controller_name, method_name, args))
+      req.params.merge!(build_params(controller_name, method_name, underscore_hash_keys(args)))
 
       # Run it
       con = controller.new
@@ -71,5 +71,22 @@ module Rails3AMF
       params.merge!(@config.mapped_params(controller_name, method_name, args))
       params
     end
+
+    def underscore_hash_keys(hash)
+      case hash
+        when Array
+          hash.map { |v| underscore_hash_keys(v) }
+        when Hash
+          Hash[hash.map{|k, v| [underscore_key(k), underscore_hash_keys(v)]}]
+        else
+          hash
+      end
+    end
+
+    def underscore_key(k)
+      k.to_s.underscore.to_sym unless k.is_a? Integer
+    end
+
+
   end
 end
