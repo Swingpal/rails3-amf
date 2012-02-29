@@ -4,7 +4,7 @@ module Rails3AMF
 
     def initialize model, props
       @model = model
-      @props = props.inject({}) {|out, (k,v)| out[k.to_s] = v; out}
+      @props = props.inject({}) {|out, (k,v)| out[k.camelcase.to_s] = v; out}
     end
 
     def encode_amf serializer
