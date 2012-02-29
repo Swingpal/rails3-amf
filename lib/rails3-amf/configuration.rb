@@ -30,7 +30,7 @@ module Rails3AMF
     end
 
     def map_params options
-      @param_mappings[options[:controller]+"#"+options[:action]] = options[:params]
+      @param_mappings[options[:controller]+"#"+options[:action]] = underscore_hash_keys(options[:params])
     end
 
     def mapped_params controller, action, arguments
